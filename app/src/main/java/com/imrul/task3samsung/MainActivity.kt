@@ -16,12 +16,13 @@ import com.imrul.task3samsung.ui.theme.Task3SamsungTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val apiKey = BuildConfig.MAPS_API_KEY
         enableEdgeToEdge()
         setContent {
             Task3SamsungTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "Android",
+                        name = "$apiKey",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
