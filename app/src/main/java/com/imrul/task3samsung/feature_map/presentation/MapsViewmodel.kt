@@ -24,6 +24,7 @@ class MapsViewmodel @Inject constructor(
             while (true) {
                 getCurrentLocation()
                 delay(1000 * 60 * 10) // 10 min delay
+//                delay(1000)
             }
         }
     }
