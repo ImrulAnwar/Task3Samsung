@@ -1,4 +1,4 @@
-package com.imrul.task3samsung.feature_map.presentation
+package com.imrul.task3samsung.feature_map.presentation.screen_map
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,8 +22,8 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
-fun MapWithCoordinates(
-    viewmodel: MapsViewmodel = hiltViewModel()
+fun MapScreen(
+    viewmodel: MapViewModel = hiltViewModel()
 ) {
     val currentCoordinates = viewmodel.currentCoordinates
     val cameraPositionState = rememberCameraPositionState {
