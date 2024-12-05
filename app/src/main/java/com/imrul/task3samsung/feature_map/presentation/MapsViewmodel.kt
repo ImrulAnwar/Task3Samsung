@@ -21,11 +21,7 @@ class MapsViewmodel @Inject constructor(
 ) : ViewModel() {
     init {
         viewModelScope.launch {
-            while (true) {
-                getCurrentLocation()
-                delay(1000 * 60 * 10) // 10 min delay
-//                delay(1000)
-            }
+            getCurrentLocation()
         }
     }
 
