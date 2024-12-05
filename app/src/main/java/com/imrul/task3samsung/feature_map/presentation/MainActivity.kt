@@ -9,56 +9,53 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.imrul.task3samsung.feature_map.presentation.screen_map.MapScreen
+import com.imrul.task3samsung.feature_map.presentation.screen_map.MapViewModel
 import com.imrul.task3samsung.ui.theme.Task3SamsungTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()
+    private val mapViewModel: MapViewModel by viewModels()
     private val permissionsToRequest = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION
     )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+
             Task3SamsungTheme {
-                val dialogQueue = viewModel.visiblePermissionsDialogueQueue
-                val multiplePermissionsLauncher = rememberLauncherForActivityResult(
-                    contract = ActivityResultContracts.RequestMultiplePermissions(),
-                    onResult = { perms ->
-                        permissionsToRequest.forEach { permission ->
-                            viewModel.onPermissionResult(
-                                permission = permission,
-                                isGranted = perms[permission] == true
-                            )
+                var isLocationPermissionGranted by remember { mutableStateOf(false) }
+                val launcher = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.RequestPermission(),
+                    onResult = { isGranted ->
+                        if (isGranted) {
+                            isLocationPermissionGranted = true
                         }
                     }
                 )
                 LaunchedEffect(Unit) {
-                    multiplePermissionsLauncher.launch(permissionsToRequest)
+                    if (!isLocationPermissionGranted) {
+                        launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                    }
                 }
-//                dialogQueue.reversed().forEach { permission ->
-//                    PermissionDialog(
-//                        permissionTextProvider = when (permission) {
-//                            is Manifest.permission.POST_NOTIFICATIONS -> PostNotificationTextProvider()
-//                            else -> return@forEach
-//                        },
-//                        isPermanentlyDeclined = !shouldShowRequestPermissionRationale(
-//                            permission
-//                        ),
-//                        onDismiss = viewModel::dismissDialog,
-//                        onOkClick = {
-//                            viewModel.dismissDialog()
-//                            multiplePermissionsLauncher.launch(
-//                                arrayOf(permission)
-//                            )
-//                        },
-//                        onGotoAppSettingsClick = ::openAppSettings
-//                    )
-//                }
+
+                LaunchedEffect(isLocationPermissionGranted) {
+                    if (isLocationPermissionGranted) {
+
+                        mapViewModel.getCurrentLocation()
+                    }
+                }
+
+
+
                 MapScreen()
             }
         }

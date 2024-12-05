@@ -8,5 +8,5 @@ object Strings {
     const val PERMANENTLY_DECLINED =
         "It seems like you permanently declined notification permission." +
                 "You can go to the app settings to grant it."
-    const val EXPLAIN_PERMISSION = "This app needs notification access to show running workout."
+    const val EXPLAIN_PERMISSION = "This app needs location permission to function properly."
 }

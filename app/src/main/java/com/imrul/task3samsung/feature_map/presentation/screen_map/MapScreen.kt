@@ -1,5 +1,6 @@
 package com.imrul.task3samsung.feature_map.presentation.screen_map
 
+import android.Manifest
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -51,7 +52,7 @@ fun MapScreen(
             onMapClick = { latLng ->
                 viewmodel.updateCoordinates(latLng)
             },
-            properties = MapProperties(isMyLocationEnabled = true),
+            properties = MapProperties(isMyLocationEnabled = false),
             content = {
                 Marker(
                     state = MarkerState(
@@ -61,7 +62,7 @@ fun MapScreen(
                         )
                     ),
                     title = "Current Location",
-                    icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE) // Optional: Custom icon
+                    icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED) // Optional: Custom icon
                 )
             }
         )

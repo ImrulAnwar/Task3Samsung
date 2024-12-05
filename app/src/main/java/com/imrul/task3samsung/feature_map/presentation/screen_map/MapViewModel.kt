@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import com.imrul.task3samsung.feature_map.domain.AccessCurrentLocationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,10 +16,10 @@ import javax.inject.Inject
 class MapViewModel @Inject constructor(
     private val accessCurrentLocationUseCase: AccessCurrentLocationUseCase
 ) : ViewModel() {
+    private var currentJob: Job? = null
+
     init {
-        viewModelScope.launch {
-            getCurrentLocation()
-        }
+        getCurrentLocation()
     }
 
     var currentCoordinates by mutableStateOf(
@@ -33,10 +34,13 @@ class MapViewModel @Inject constructor(
         currentCoordinates = latLng
     }
 
-    private suspend fun getCurrentLocation() {
-        accessCurrentLocationUseCase().collect { location ->
-            val latLng = LatLng(location.latitude, location.longitude)
-            currentCoordinates = latLng
+    fun getCurrentLocation() {
+        currentJob?.cancel()
+        currentJob = viewModelScope.launch {
+            accessCurrentLocationUseCase().collect { location ->
+                val latLng = LatLng(location.latitude, location.longitude)
+                currentCoordinates = latLng
+            }
         }
     }
 }
