@@ -20,11 +20,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-        val keystoreFile = project.rootProject.file("local.properties")
-        val properties = Properties()
-        properties.load(keystoreFile.inputStream())
-        val mapsApiKey = properties.getProperty("MAPS_API_KEY") ?: ""
-        buildConfigField ("String", "MAPS_API_KEY", "\"${mapsApiKey}\"")
+
     }
 
     buildTypes {
@@ -75,7 +71,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // google maps
-    implementation (libs.play.services.maps)
-    implementation (libs.maps.compose)
+    implementation(libs.play.services.maps)
+    implementation(libs.maps.compose)
 
 }

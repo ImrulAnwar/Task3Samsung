@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Task3Samsung</string>
+    <string name="mapsApiKey">AIzaSyAgMB97Im1H18RcT6Gwva9XmSDBzW5vXlY</string>
 </resources>

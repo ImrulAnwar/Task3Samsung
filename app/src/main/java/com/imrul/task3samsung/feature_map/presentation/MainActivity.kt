@@ -1,4 +1,4 @@
-package com.imrul.task3samsung
+package com.imrul.task3samsung.feature_map.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,39 +11,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.imrul.task3samsung.BuildConfig
 import com.imrul.task3samsung.ui.theme.Task3SamsungTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val apiKey = BuildConfig.MAPS_API_KEY
         enableEdgeToEdge()
         setContent {
             Task3SamsungTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "$apiKey",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                MapWithCoordinates()
             }
         }
-    }
-
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Task3SamsungTheme {
-        Greeting("Android")
     }
 }
