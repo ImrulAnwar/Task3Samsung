@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,7 +26,19 @@ import com.google.maps.android.compose.rememberCameraPositionState
 fun MapWithCoordinates(
     viewmodel: MapsViewmodel = hiltViewModel()
 ) {
-    var currentCoordinates = viewmodel.currentCoordinates
+    val currentCoordinates = viewmodel.currentCoordinates
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(
+            LatLng(currentCoordinates.latitude, currentCoordinates.longitude), 15f
+        )
+    }
+
+    // Ensure the camera position updates when coordinates change
+    LaunchedEffect(currentCoordinates) {
+        cameraPositionState.position = CameraPosition.fromLatLngZoom(
+            LatLng(currentCoordinates.latitude, currentCoordinates.longitude), 15f
+        )
+    }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -34,9 +48,7 @@ fun MapWithCoordinates(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            cameraPositionState = rememberCameraPositionState {
-                position = CameraPosition.fromLatLngZoom(currentCoordinates, 10f)
-            },
+            cameraPositionState = cameraPositionState,
             onMapClick = { latLng ->
                 viewmodel.updateCoordinates(latLng)
             }
