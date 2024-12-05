@@ -13,14 +13,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
-fun MapWithCoordinates() {
-    var currentCoordinates by remember { mutableStateOf(LatLng(22.3752,  91.8349)) } // Default to San Francisco
+fun MapWithCoordinates(
+    viewmodel: MapsViewmodel = hiltViewModel()
+) {
+    var currentCoordinates = viewmodel.currentCoordinates
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -34,7 +38,7 @@ fun MapWithCoordinates() {
                 position = CameraPosition.fromLatLngZoom(currentCoordinates, 10f)
             },
             onMapClick = { latLng ->
-                currentCoordinates = latLng
+                viewmodel.updateCoordinates(latLng)
             }
         )
         Text(
@@ -42,7 +46,7 @@ fun MapWithCoordinates() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            style = androidx.compose.material3.MaterialTheme.typography.bodyLarge
+            fontSize = 16.sp
         )
     }
 }
